@@ -1,0 +1,462 @@
+
+<div class="row" ng-if="pageMode == 'defaultMode'">
+  <div class="container">
+    </br>
+
+    <div class="row">
+    </br>
+      <div class="col-lg-12">
+        <h4><b>Crew List</b></h4>
+        <div class="bs-component">
+          <div class="alert alert-dismissible alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>TIPS: Welcome to Crew Control!</strong></br>Here you can create, manage and lauch your custom crews.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-xs-4">
+        <img ng-src="images/crew.png" class="img-responsive center-block"  width="128" height="128">
+      </div>
+
+      <div class="col-xs-4">
+
+        <div class="panel panel-primary">
+
+          <div class="panel-heading">
+            <div class="panel-title">Create Crew</div>
+          </div>
+
+          <div class="panel-body">
+            <div class="text-center">
+              <b>Create a new crew</b></br>
+              <b>or team list</b>
+            </div>
+            <p></p>
+            <a ng-click="addNewCrew()" class="btn btn-info center-block"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> ADD</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="col-xs-4">
+
+        <div class="panel panel-primary">
+
+          <div class="panel-heading">
+            <div class="panel-title">Import Crew</div>
+          </div>
+
+          <div class="panel-body">
+            <div class="text-center">
+              <b>Import a new crew</b></br>
+              <b>or team list</b>
+            </div>
+            <p></p>
+            <a ng-click="addNewCrew()" class="btn btn-info center-block"><i class="fa fa-upload fa-lg" aria-hidden="true"></i> IMPORT</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div ng-repeat="(crewKey, crew) in crews">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+
+            <div class="panel-heading">
+              <div class="panel-title">
+                <span class="badge badge-default pull-right">{{crew.members.length || 0}}</span>
+                {{crew.name | uppercase}}
+              </div>
+            </div>
+
+            <div class="panel-body">
+              <div class="row">
+
+                <div class="col-xs-4 text-center">
+                  <!-- <img ng-src="images/crew.png" class="img-responsive center-block"  width="128" height="128"> -->
+                  <ui-knob value="crew.score*10" options="goalKnobOptions"></ui-knob>
+                </div>
+
+                <div class="col-xs-4 text-center">
+                  <b>UID: </b>{{crewKey}}</br>
+                  <a href="" ng-click="openCrewStats(crewKey)"><section class="teal" style="padding-top:20px;padding-bottom:20px"><h2>{{crew.members.length || 0}}</h2>Members</section></a>
+                  <a href="" ng-click="openCrewPinList(crewKey)" ><i class="fa  fa-print" aria-hidden="true"></i><b> PIN LIST</b></a>
+                </div>
+
+                <div class="col-xs-4 text-center">
+                <a href="" ng-click="openCrewEditor(crewKey)" style="width:160px; margin-bottom:10px;" class="btn btn-warning center-block"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i> EDIT</a>
+                <a href="" ng-click="openCrewStats(crewKey)" style="width:160px; margin-bottom:10px;" class="btn btn-success center-block"><i class="fa fa-bar-chart fa-lg" aria-hidden="true"></i> STATS</a>
+
+                <a href="" ng-if=creatingGame style="width:160px; margin-bottom:10px;" class="btn btn-info center-block"><i class="fa fa-play fa-lg" aria-hidden="true"></i> LAUNCH</a>
+
+                <div ng-if=!creatingGame class="btn-group">
+                  <a href="" data-toggle="dropdown" style="width:136px; margin-bottom:10px;" class="btn btn-info center-block"><i class="fa fa-play fa-lg" aria-hidden="true"></i> LAUNCH</a>
+                  <a href="" class="btn btn-info center-block dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="(missionKey, mission) in missions">
+                      <a href="" ng-click="launchMission(missionKey, crewKey)">{{mission.name}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-if="pageMode == 'editorMode'">
+  <div class="container">
+  </br>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="bs-component">
+          <div class="alert alert-dismissible alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>TIPS: This is the Crew Stats view!</strong></br>Here you can view a brief list of the crew scores and their detailed career.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 ">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+
+            <a href="" ng-click="closeSaveCrewEditor()"><b class="pull-right">CLOSE</b><i class="fa fa-times fa-lg pull-right" aria-hidden="true"></i></a>
+
+            <span inline-edit="selectedCrew.name"
+            inline-edit-callback="myUpdateHandler(newValue)"
+            inline-edit-btn-edit=""
+            inline-edit-on-blur="save"
+            inline-edit-on-click>
+            </span>
+          </h3>
+
+        </div>
+
+        <div class="panel-body">
+          <b>UID: </b>{{selectedCrewId}}</br>
+          <b>Members: </b>{{selectedCrew.members.length}}
+          <p></p>
+
+          <div ng-repeat="member in selectedCrew.members | orderBy:'surname'">
+
+            <li class="list-group-item" href="#sub_categoria_{{$index}}" id="categoria_{{$index}}" data-toggle="collapse" data-parent="#sub_categoria_{{$index}}">
+              <a ng-click="deleteMember(member)" href=""><i class="fa fa-trash-o fa-lg pull-right" aria-hidden="true"></i></a>
+              <i class="fa fa-chevron-down pull-left"></i>
+              <!-- <img ng-src="https://robohash.org/{{member.surname}},{{member.name}}.jpg?size=32x32"> -->
+              <ng-letter-avatar charCount="2" data={{member.surname}}></ng-letter-avatar>
+              <!-- <img ng-src={{member.image}} class="img-rounded"  width="64" height="64"></i> -->
+              <b>{{member.surname | uppercase}}</b>, {{member.name | uppercase}}
+            </li>
+
+            <div class="collapse list-group-submenu" id="sub_categoria_{{$index}}">
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-user pull-left" aria-hidden="true"></i>
+                <span inline-edit="member.name"
+                inline-edit-callback="myUpdateHandler(newValue)"
+                inline-edit-btn-edit=""
+                inline-edit-on-blur="save"
+                inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-user pull-left" aria-hidden="true"></i>
+                <span inline-edit="member.surname"
+                inline-edit-callback="myUpdateHandler(newValue)"
+                inline-edit-btn-edit=""
+                inline-edit-on-blur="save"
+                inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-picture-o pull-left" aria-hidden="true"></i>
+                <span inline-edit="member.image"
+                inline-edit-callback="myUpdateHandler(newValue)"
+                inline-edit-btn-edit=""
+                inline-edit-on-blur="save"
+                inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-key pull-left" aria-hidden="true"></i>
+                <span inline-edit="member.pin"
+                inline-edit-callback="myUpdateHandler(newValue)"
+                inline-edit-btn-edit=""
+                inline-edit-on-blur="save"
+                inline-edit-on-click>
+                </span>
+              </a>
+
+            </div>
+          </div>
+
+          <a ng-click="addNewMember()" class="list-group-item list-group-item-warning text-center">
+            <i class="fa fa-plus"></i>
+            Add Member
+          </a>
+
+          </br>
+          <a ng-click="deleteCrew()" class="btn btn-danger"><i class="fa fa-trash fa-lg" aria-hidden="true"></i> DELETE CREW</a>
+          <a ng-click="closeSaveCrewEditor()" class="btn btn-success pull-right"><i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i> SAVE & CLOSE</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="row" ng-if="pageMode == 'statsMode'">
+  <div class="container">
+  </br>
+  </br>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <h4><b>CREW STATS</b></h4>
+
+        <div class="bs-component">
+          <div class="alert alert-dismissible alert-info">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>TIPS: This is the Crew Editor view!</strong></br>Here you can add, modify or delete your crews. Click above the text to edit it or drag and drop to change the order.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+        <a href="#/crew">
+          <section class="teal" style="padding-top:20px;padding-bottom:20px">
+            <h2>{{averageScore || 0 | number:2}}</h2>
+            Average Score
+          </section>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+        <a href="#/crew">
+          <section class="info" style="padding-top:20px;padding-bottom:20px">
+            <h2>{{averagePoints || 0 | number:0}}</h2>
+            Average Points
+          </section>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+        <a href="#/mission">
+          <section class="navy" style="padding-top:20px;padding-bottom:20px">
+            <h2>{{averageRank || 0 | number: 1}}</h2>
+            Average Rank
+          </section>
+        </a>
+      </div>
+
+    </div>
+
+    <br>
+
+    <div class="col-lg-12">
+      <div class="panel panel-primary">
+
+        <div class="panel-heading">
+          <div class="panel-title">
+            <a href="" ng-click="closeSaveCrewEditor()"><b class="pull-right">CLOSE</b><i class="fa fa-times fa-lg pull-right" aria-hidden="true"></i></a>
+            SHIP INFO
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="row">
+
+            <div class="col-xs-4 text-center">
+              <!-- <ui-knob value="selectedCrew.score*10" options="knobOptions"></ui-knob> -->
+              <ui-knob value="(selectedCrew.shipVar1+selectedCrew.shipVar2+selectedCrew.shipVar3)/3" options="shipKnobOptions"></ui-knob>
+            </div>
+
+            <div class="col-xs-4 text-center">
+              <img ng-src="images/shuttle.png" class="img-responsive" height="128">
+            </div>
+
+            <div class="col-xs-4 text-center">
+              <a href="" ng-click="openCrewEditor(crewKey)" style="width:160px; margin-bottom:10px;" class="btn btn-warning center-block"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> SHIELDS</a>
+              <a href="" ng-click="openCrewStats(crewKey)" style="width:160px; margin-bottom:10px;" class="btn btn-success center-block"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> ENGINES</a>
+              <a href="" ng-click="openCrewStats(crewKey)" style="width:160px; margin-bottom:10px;" class="btn btn-info center-block"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> ENERGY</a>
+            </div>
+
+          </div>
+
+          <div class="col-lg-12">
+
+              <b><i class="fa fa-shield fa-lg" aria-hidden="true"></i> SHIELDS</b>
+              <div class="progress" style="overflow:visible;height:26px;margin-bottom:5px;">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="{{selectedCrew.shipVar1}}"
+                      aria-valuemin="0" aria-valuemax="100" style="width:{{selectedCrew.shipVar1}}%; font-size:20px; line-height:1.3; background-color:#F59D00;">
+                      {{selectedCrew.shipVar1}}%
+                  </div>
+              </div>
+
+              <b><i class="fa fa-cog fa-lg" aria-hidden="true"></i> ENGINES</b>
+              <div class="progress" style="overflow:visible;height:26px;margin-bottom:5px;">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="{{selectedCrew.shipVar2}}"
+                      aria-valuemin="0" aria-valuemax="100" style="width:{{selectedCrew.shipVar2}}%; font-size:20px; line-height:1.3; background-color:#00BD9C;">
+                      {{selectedCrew.shipVar2}}%
+                  </div>
+              </div>
+
+              <b><i class="fa fa-bolt fa-lg" aria-hidden="true"></i> ENERGY</b>
+              <div class="progress" style="overflow:visible;height:26px;margin-bottom:5px;">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="{{selectedCrew.shipVar3}}"
+                      aria-valuemin="0" aria-valuemax="100" style="width:{{selectedCrew.shipVar3}}%; font-size:20px; line-height:1.3; background-color:#00AEDD;">
+                      {{selectedCrew.shipVar3}}%
+                  </div>
+              </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-lg-12">
+      <div class="panel panel-primary">
+
+        <div class="panel-heading">
+          <h3 class="panel-title">
+
+            <a href="" ng-click="closeSaveCrewEditor()"><b class="pull-right">CLOSE</b><i class="fa fa-times fa-lg pull-right" aria-hidden="true"></i></a>
+
+            <span inline-edit="selectedCrew.name"
+            inline-edit-callback="myUpdateHandler(newValue)"
+            inline-edit-btn-edit=""
+            inline-edit-on-blur="save"
+            inline-edit-on-click>
+            </span>
+
+          </h3>
+
+        </div>
+
+        <div class="panel-body">
+        <b>UID: </b>{{selectedCrewId}}</br>
+        <b>Members: </b>{{selectedCrew.members.length}}
+        <p></p>
+
+        <div class="bs-component">
+          <table class="table table-striped table-hover ">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Surnames, Name</th>
+                <th>Rank</th>
+                <th>Games</th>
+                <th>Points</th>
+                <th>Score</th>
+                <th>Detailed Stats</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr ng-repeat="(key, value) in selectedCrew.members | orderBy:'points' | reverse">
+                <td>{{$index+1}}</td>
+                <td><b>{{value.surname}},</b> {{value.name}}</td>
+                <td>{{value.rank}}</td>
+                <td>{{value.games}}</td>
+                <td>{{value.points}}</td>
+                <td>{{value.score | number:2}}</td>
+                <td><a ng-click="OpenMemberCareer(value.pin)">Open Career</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="row" ng-if="pageMode == 'pinListMode'">
+  <div class="container">
+  </br>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="bs-component">
+        <div class="alert alert-dismissible alert-info">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>TIPS: This is the Crew PIN List view!</strong></br>You can print this table, cut it and give it to the students to login.
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-lg-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+
+          <a href="" ng-click="closeSaveCrewEditor()"><b class="pull-right">CLOSE</b><i class="fa fa-times fa-lg pull-right" aria-hidden="true"></i></a>
+
+          <span inline-edit="selectedCrew.name"
+          inline-edit-callback="myUpdateHandler(newValue)"
+          inline-edit-btn-edit=""
+          inline-edit-on-blur="save"
+          inline-edit-on-click>
+        </span>
+
+      </h3>
+
+    </div>
+
+    <div class="panel-body">
+      <b>UID: </b>{{selectedCrewId}}</br>
+      <b>Members: </b>{{selectedCrew.members.length}}
+      <p></p>
+
+      <div class="bs-component">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Avatar</th>
+              <th>Surnames, Name</th>
+              <th>PIN</th>
+              <th>QR Code</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="(key, value) in selectedCrew.members | orderBy:'surname'" style="border: 3px dotted black;">
+                <td><i class="fa fa-scissors fa-2x" aria-hidden="true"></i></td>
+                <td><ng-letter-avatar charCount="2" data={{value.surname}} height="64px" width="64px"></ng-letter-avatar></td>
+                <!-- <td><img src="/images/career.png" width="64"></td> -->
+                <td><h4><b>{{value.surname | uppercase}}</b>,</br>{{value.name | uppercase}}</h4></td>
+                <td><h2>{{value.pin}}</h2></td>
+                <td><img src="/images/qr.png" width="64" height="64"></td>
+              </tr>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>

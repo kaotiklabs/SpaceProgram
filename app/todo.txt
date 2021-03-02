@@ -1,0 +1,60 @@
+
+//TODO
+
+idea JOAN
+ - idea 1: explosió solar, fugir del sol
+ - idea 2: les classes lluiten en conjunt cada misió contra un enemic comú
+
+
+HUI
+
+posar el crew score al acabar una prova
+posar right wrong en missions al acabar una prova
+fer dades account ajax
+ng image upload profile
+poder configurar temps per pregunta
+FUTUR
+
+- les classes es divideixen en tripulacions (grups) per a poder competir en la carrera espacial
+- asignació automática de grups
+- poden millorar les naus gastant els XP
+- events aleatoris abans de cada test
+- modo deures a casa, (no temps real) server node.js
+
+- robohash.org en astronautes
+
+BUGS
+
+ ! A vegades grava 2 vegades les puntuacions en lusuari
+
+LAUNCH PAD
+punts a misions
+punts a grup
+
+- posar llistat de ranks!
+
+- en career, posar el nom real de les missions
+- crear login de alumne per veure rank i career
+- guardar stats de missions respostes R, W, N/A
+- multilanguage
+
+- fer q es veja un 0.1 chart answers, cuadrats de color
+- sustituir countdown por barra de progreso en host
+- custom images per a crew i missions
+- poder pujar i baixar el llistat, drag and drop en save de les missions, preguntes i classes
+- modal, demanar confirmacio borrar members, preguntes, missions, crews...
+
+- Trivia.js ja no té sentit, llevar-lo
+. career desde teacher sense member, portal llistat de crews?
+
+- poder pujar imatges custom al quiz, firebase en dragdrop
+- posar numeros en les barres de en host chart result
+
+MILLORES
+- crear export de crew amb pins per retallar, mirar https://github.com/Epotignano/angular-export-table
+treure pdf amb classe alumnes per retallar
+posar qr al pdf de alumnes per fer login automatic?
+importar estudiants de un txt
+importar preguntes usant formate Aiken https://docs.moodle.org/24/en/Aiken_format
+exportar classe
+exportar missions

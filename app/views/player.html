@@ -1,0 +1,190 @@
+
+<style type="text/css">
+   body { background: #18BC9C !important; } /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+</style>
+
+<div class="row" ng-if="game.data.state=='joinGame'">
+	<header>
+		<div class="Absolute-Center is-Responsive">
+
+			<div class="col-lg-12 hidden-sm">
+				<img class="img-responsive" src="images/member.png">
+			</div>
+
+
+			<div class="col-lg-12">
+				<div class="intro-text">
+					<span class="name">Join Us!</span>
+				</div>
+			</div>
+
+			<div class="col-lg-12">
+				<hr class="star-light">
+				<form>
+					<div class="form-group">
+						<h3>Mission Code</h3>
+
+						<input ng-model="$parent.PIN" type="text" class="form-control input-lg" id="PIN" placeholder="Enter mission code">
+					</div>
+					<div class="form-group">
+						<h3>PIN or Name</h3>
+						<input ng-model="$parent.screenName" type="text" class="form-control input-lg" id="screenName" placeholder="Enter your name">
+					</div>
+
+					<button type="submit" ng-if="!joining" class="btn btn-lg btn-primary" ng-click="join()"><i class="fa fa-play"></i> Join Mission</button>
+					<button class="btn btn-lg btn-primary" ng-disabled="true" ng-if="joining">
+						Joining game...
+					</button>
+				</form>
+			</div>
+
+		</div>
+
+	</header>
+</div>
+
+<div class="row" ng-if="game.data.state=='waitingForPlayers'">
+	<header>
+		<div class="Absolute-Center is-Responsive">
+
+			<div class="col-lg-12 hidden-sm">
+				<img class="img-responsive" src="images/member.png" alt="">
+			</div>
+
+			<div class="col-lg-12">
+				<h1>Hi {{game.data.users[playerId].screen_name}}</h1>
+				<h3>Welcome to the Launch Pad.</h3>
+				<h3>Wait for everyone else to join.</h3>
+			</div>
+
+		</div>
+	</header>
+</div>
+
+<div class="row" ng-if="game.data.state=='launch'">
+	<header>
+		<div class="Absolute-Center is-Responsive">
+
+			<div class="col-lg-12 hidden-md hidden-sm hidden-xs">
+				<img class="img-responsive" src="images/member.png" alt="">
+			</div>
+
+			<div class="col-lg-12">
+				<h1>ATTENTION</h1>
+				<i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+				<h3>Count Down Started.</h3>
+				<h3>Get Ready!</h3>
+			</div>
+
+		</div>
+	</header>
+</div>
+
+<div class="row" ng-if="game.data.state=='preQuestion'">
+	<header>
+		<div class="Absolute-Center is-Responsive">
+
+			<div class="col-lg-12 hidden-md hidden-sm hidden-xs">
+				<img class="img-responsive" src="images/member.png" alt="">
+			</div>
+
+			<div class="col-lg-12">
+				<h1>ATTENTION</h1>
+        <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+				<h3>Approaching next milestone!</h3>
+			</div>
+
+		</div>
+	</header>
+</div>
+
+<div class="row" ng-if="game.data.state=='question'">
+
+<div class="Absolute-Center">
+	<div class="line">
+			<selector>
+			<div class="col-md-6 quad " ng-click="saveAnswer(answer)" ng-style="{'background-color': answerColors[$index]}" ng-repeat="answer in game.data.possibleAnswers">
+
+				<div class="Absolute-Center is-Responsive text-center">
+
+					<div ng-if="answerBuf != answer">
+						<i ng-if="$index==0" style="color:white" class="fa fa-square fa-4x" aria-hidden="true"></i>
+						<i ng-if="$index==1" style="color:white" class="fa fa-play fa-rotate-270 fa-4x" aria-hidden="true"></i>
+						<i ng-if="$index==2" style="color:white" class="fa fa-circle fa-4x" aria-hidden="true"></i>
+						<i ng-if="$index==3" style="color:white" class="fa fa-star fa-4x" aria-hidden="true"></i>
+					</div>
+
+					<div ng-if="answerBuf == answer">
+						<i ng-if="$index==0" style="color:black" class="fa fa-square fa-4x" aria-hidden="true"></i>
+						<i ng-if="$index==1" style="color:black" class="fa fa-play fa-rotate-270 fa-4x" aria-hidden="true"></i>
+						<i ng-if="$index==2" style="color:black" class="fa fa-circle fa-4x" aria-hidden="true"></i>
+						<i ng-if="$index==3" style="color:black" class="fa fa-star fa-4x" aria-hidden="true"></i>
+					</div>
+
+				</div>
+
+			</div>
+		</selector>
+
+	</div>
+</div>
+
+</div>
+
+
+<div class="row" ng-if="game.data.state=='postQuestion'">
+	<header>
+
+			<div class="Absolute-Center is-Responsive">
+
+			<div class="col-lg-12 hidden-md hidden-sm hidden-xs">
+				<img class="img-responsive" src="images/member.png" alt="">
+			</div>
+
+			<div class="col-lg-12">
+				<h1 ng-if="game.data.users[playerId].currentAnswer == currentQuestion.answer">Correct!</h1>
+				<h1 ng-if="game.data.users[playerId].currentAnswer != currentQuestion.answer">Sorry, wrong.</h1>
+				<h2>You have {{game.data.users[playerId].currentPoints || 0}} points.</h2>
+			</div>
+
+		</div>
+	</header>
+</div>
+
+<div class="row" ng-if="game.data.state=='leaderboard'">
+	<header>
+		<div class="Absolute-Center is-Responsive">
+
+			<div class="col-lg-12 hidden-md hidden-sm hidden-xs">
+				<img class="img-responsive" src="images/member.png" alt="">
+			</div>
+
+			<div class="col-lg-12">
+				<h1>Mission Finished!</h1>
+				<h3>Thanks for playing.</h3>
+			</div>
+
+		  <button	class="btn btn-lg btn-primary" ng-click="exitGame()">Exit Game</button>
+	  </div>
+
+  </header>
+</div>
+
+<div class="row" ng-if="game.data.state=='accessdenied'">
+	<header>
+		<!-- <div class="container"> -->
+		<div class="Absolute-Center is-Responsive">
+
+      <div class="col-lg-12">
+				<img class="img-responsive" src="images/noauth.png" alt="">
+				<div class="intro-text">
+					<span class="name">Sorry</span>
+				</div>
+        <h3>Mission doesn't exist or is private.</h3>
+			</div>
+
+      <button	class="btn btn-lg btn-primary" ng-click="exitGame()">Exit Mission</button>
+	  </div>
+
+  </header>
+</div>

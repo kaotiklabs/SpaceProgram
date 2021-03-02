@@ -1,0 +1,251 @@
+
+<!-- <section class="info text-center">
+    <h4><b>Mission Control</b></h4>
+</section> -->
+
+
+<div class="row" ng-if="editorMode == false">
+<div class="container">
+</br>
+  <div class="row">
+    <div class="col-lg-12">
+      </br>
+      <h4><b>Mission Control</b></h4>
+      <div class="bs-component">
+        <div class="alert alert-dismissible alert-info">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>TIPS: Welcome to Mission Control!</strong></br>Here you can create, manage and lauch your custom missions.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-4">
+      <img ng-src="images/satellite.png" class="img-responsive center-block"  width="128" height="128">
+    </div>
+
+    <div class="col-xs-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="panel-title">Create Mission</div>
+        </div>
+
+        <div class="panel-body">
+          <div class="text-center">
+            <b>Create a new public</b></br>
+            <b>or private mission</b>
+          </div>
+          <p></p>
+          <a ng-click="addNewMission()" class="btn btn-info center-block"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> ADD</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="panel-title">Import Mission</div>
+        </div>
+
+        <div class="panel-body">
+          <div class="text-center">
+            <b>Create a new public</b></br>
+            <b>or private mission</b>
+          </div>
+          <p></p>
+          <a ng-click="addNewMission()" class="btn btn-info center-block"><i class="fa fa-upload fa-lg" aria-hidden="true"></i> IMPORT</a>
+        </div>
+      </div>
+    </div>
+
+    <div ng-repeat="(missionKey, mission) in missions">
+        <div class="col-xs-12">
+          <div class="panel panel-primary">
+
+            <div class="panel-heading">
+              <div class="panel-title">
+                <span class="badge badge-default pull-right">{{mission.questions.length}}</span>
+                {{mission.name | uppercase}}
+              </div>
+            </div>
+
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-4 text-center">
+                  <img ng-src="images/launch.png" class="img-responsive center-block"  width="128" height="128">
+                </div>
+                <div class="col-xs-4 text-center">
+                  <b>UID: </b>{{missionKey}}</br>
+                  <a href="" ng-click="openMissionEditor(missionKey)" >
+                    <section class="info" style="padding-top:20px;padding-bottom:20px">
+                      <h2>{{mission.questions.length || 0}}</h2>
+                      Questions
+                    </section>
+                  </a>
+                </div>
+               <div class="col-xs-4 text-center">
+                 <a href="" ng-click="openMissionEditor(missionKey)" style="width:160px; margin-bottom:10px;" class="btn btn-warning center-block"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i> EDIT</a>
+                 <a href="" ng-click="openMissionStats(missionKey)" style="width:160px; margin-bottom:10px;" class="btn btn-success center-block"><i class="fa fa-bar-chart fa-lg" aria-hidden="true"></i> STATS</a>
+
+                 <a href="" ng-if=creatingGame style="width:160px; margin-bottom:10px;" class="btn btn-info center-block"><i class="fa fa-play fa-lg" aria-hidden="true"></i> LAUNCH</a>
+
+                 <div ng-if=!creatingGame class="btn-group">
+                   <a href="" data-toggle="dropdown" style="width:136px; margin-bottom:10px;" class="btn btn-info center-block"><i class="fa fa-play fa-lg" aria-hidden="true"></i> LAUNCH</a>
+                   <a href="" class="btn btn-info center-block dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                   <ul class="dropdown-menu">
+
+                     <li><a href="" ng-click="launchMission(missionKey)">Open Mission</a></li>
+                     <li class="divider"></li>
+
+                     <li ng-repeat="(crewKey, crew) in crews">
+                      <a href="" ng-click="launchMission(missionKey, crewKey)">{{crew.name}}</a>
+                     </li>
+
+                   </ul>
+                 </div>
+
+
+               </div>
+             </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="row" ng-if="editorMode == true">
+  <div class="container">
+  </br>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="bs-component">
+        <div class="alert alert-dismissible alert-info">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>TIPS: This is the Mission Editor view!</strong></br>Here you can add, modify or delete your mission's questions. Click above the text to edit it or drag and drop to change the order.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12 ">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+
+          <a href="" ng-click="closeMissionEditor()"><b class="pull-right">CLOSE</b><i class="fa fa-times fa-lg pull-right" aria-hidden="true"></i></a>
+
+          <span inline-edit="selectedMission.name"
+            inline-edit-callback="myUpdateHandler(newValue)"
+            inline-edit-btn-edit=""
+            inline-edit-on-blur="save"
+            inline-edit-on-click>
+          </span>
+
+        </h3>
+
+      </div>
+
+      <div class="panel-body">
+        <b>UID: </b>{{selectedMissionId}}</br>
+        <b>Questions: </b>{{selectedMission.questions.length}}
+        <p></p>
+
+        <div dragula='"bag-one"'>
+          <div ng-repeat="question in selectedMission.questions">
+
+
+            <li class="list-group-item" href="#sub_categoria_{{$index}}" id="categoria_{{$index}}" data-toggle="collapse" data-parent="#sub_categoria_{{$index}}">
+              <a ng-click="deleteQuestion($index)" href=""><i class="fa fa-trash-o fa-lg pull-right" aria-hidden="true"></i></a>
+              <i class="fa fa-question-circle-o fa-lg pull-left" aria-hidden="true"></i>
+              <i class="fa fa-chevron-down pull-left"></i>
+              <b>{{question.q}}</b>
+            </li>
+
+            <div class="collapse list-group-submenu" id="sub_categoria_{{$index}}">
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-question-circle-o pull-left" aria-hidden="true"></i>
+                <!-- {{question.image}} -->
+                <span inline-edit="question.q"
+                  inline-edit-callback="myUpdateHandler(newValue)"
+                  inline-edit-btn-edit=""
+                  inline-edit-on-blur="save"
+                  inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-picture-o pull-left" aria-hidden="true"></i>
+                <!-- {{question.image}} -->
+                <span inline-edit="question.image"
+                  inline-edit-callback="myUpdateHandler(newValue)"
+                  inline-edit-btn-edit=""
+                  inline-edit-on-blur="save"
+                  inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-check pull-left" aria-hidden="true"></i>
+             <!-- <b>{{question.answer}}</b> -->
+                <b>
+                  <span inline-edit="question.answer"
+                   inline-edit-callback="myUpdateHandler(newValue)"
+                   inline-edit-btn-edit=""
+                   inline-edit-on-blur="save"
+                   inline-edit-on-click>
+                  </span>
+                </b>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-times pull-left" aria-hidden="true"></i>
+                <!-- {{question.wrong_answers[0]}} -->
+                <span inline-edit="question.wrong_answers[0]"
+                  inline-edit-callback="myUpdateHandler(newValue)"
+                  inline-edit-btn-edit=""
+                  inline-edit-on-blur="save"
+                  inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-times pull-left" aria-hidden="true"></i>
+                <!-- {{question.wrong_answers[0]}} -->
+                <span inline-edit="question.wrong_answers[1]"
+                  inline-edit-callback="myUpdateHandler(newValue)"
+                  inline-edit-btn-edit=""
+                  inline-edit-on-blur="save"
+                  inline-edit-on-click>
+                </span>
+              </a>
+
+              <a href="" class="list-group-item sub-item" data-parent="#sub_categoria_{{$index}}" style="padding-left: 78px;"><i class="fa fa-times pull-left" aria-hidden="true"></i>
+                <!-- {{question.wrong_answers[0]}} -->
+                <span inline-edit="question.wrong_answers[2]"
+                  inline-edit-callback="myUpdateHandler(newValue)"
+                  inline-edit-btn-edit=""
+                  inline-edit-on-blur="save"
+                  inline-edit-on-click>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <a ng-click="addNewQuestion(selectedMissionId)" class="list-group-item list-group-item-warning text-center">
+            <i class="fa fa-plus"></i>
+            Add question
+          </a>
+
+        </div>
+      </br>
+        <a ng-click="deleteMission(selectedMissionId)" class="btn btn-danger"><i class="fa fa-trash fa-lg" aria-hidden="true"></i> DELETE MISSION</a>
+        <!-- <a class="btn btn-success pull-right"><i class="fa fa-play fa-lg" aria-hidden="true"></i> LAUNCH MISSION</a> -->
+        <a ng-click="closeSaveMissionEditor()" class="btn btn-success pull-right"><i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i> SAVE & CLOSE</a>
+      </div>
+    </div>
+  </div>
+
+  </div>
+</div>

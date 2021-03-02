@@ -1,0 +1,65 @@
+<style type="text/css">
+   body { background: #00AFDB !important; } /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+</style>
+
+<section class="info">
+
+<div class="Absolute-Center is-Responsive">
+
+<div class="row">
+
+  <div class="col-lg-4 pull-right text-center">
+    <button class="btn btn-default" style="width:150px; margin-bottom:20px;" ng-click="anonymousLogin()"><i class="fa fa-user-secret fa-lg" aria-hidden="true"></i> Anonymous</button>
+    <button class="btn btn-primary" style="width:150px; margin-bottom:20px;" ng-click="oauthLogin('facebook')"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i> Facebook</button>
+    <button class="btn btn-danger" style="width:150px; margin-bottom:20px;" ng-click="oauthLogin('google')"><i class="fa fa-google-plus fa-lg" aria-hidden="true"></i> Google</button>
+    <button class="btn btn-info" style="width:150px; margin-bottom:20px;" ng-click="oauthLogin('twitter')"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i> Twitter</button>
+  </div>
+
+<div class="col-lg-8">
+    <form role="form">
+      <p class="form-group">
+        <label for="loginEmail"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i> Email</label>
+        <input id="loginEmail" required name="email" type="email" ng-model="email" class="form-control" />
+      </p>
+      <p class="form-group">
+        <label for="loginPass"><i class="fa fa-key fa-lg" aria-hidden="true"></i> Password </label>
+        <input id="loginPass" required name="pass" type="password" ng-model="pass" class="form-control" />
+      </p>
+      <p class="form-group" ng-cloak ng-show="createMode">
+        <label for="loginConfirm"><i class="fa fa-check fa-lg" aria-hidden="true"></i> Confirm pass</label>
+        <input id="loginConfirm" ng-required="createMode" name="confirm" type="password" ng-model="confirm" class="form-control" />
+      </p>
+
+      <p>
+        <button  class="btn btn-success" ng-click="passwordLogin(email, pass)" ng-hide="createMode"><i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Log In </button>
+        <button  class="btn btn-warning" ng-click="createMode = true" ng-hide="createMode"> <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i> Register </button>
+        <button  class="btn btn-primary" ng-cloak ng-show="createMode"
+                ng-click="createAccount(email, pass, confirm)"><i class="fa fa-user fa-lg" aria-hidden="true"></i> Create Account</button>
+        <button  class="btn btn-default btn-lg" ng-cloak ng-show="createMode" ng-click="createMode = false"><i class="fa fa-times fa-lg" aria-hidden="true"></i> Cancel </button>
+      </p>
+    </form>
+    <p ng-show="err" class="bg-danger">{{err}}</p>
+  </div>
+
+</div>
+
+<!-- <br> -->
+
+<!-- <div class="row text-center">
+  <h4><b>Choose your profile:</b></h4>
+  <div class="col-lg-4">
+    <button class="btn btn-default btn-lg" style="width:150px; height:150px;" ng-click="anonymousLogin()">STUDENT</button>
+  </div>
+
+  <div class="col-lg-4">
+    <button class="btn btn-primary btn-lg" style="width:150px; height:150px;" ng-click="oauthLogin('facebook')">PARENT</button>
+  </div>
+
+  <div class="col-lg-4">
+    <button class="btn btn-danger btn-lg" style="width:150px; height:150px;" ng-click="oauthLogin('google')">TEACHER</button>
+  </div>
+</div> -->
+
+</div>
+</div>
+</section>

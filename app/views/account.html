@@ -1,0 +1,121 @@
+
+<!-- MEMBERS, CREW, MISSION STATS -->
+<div class="container">
+  <div class="row" style="padding-top:20px">
+
+    <div class="col-lg-12">
+      </br>
+      <h4><b>Account</b></h4>
+
+      <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+        <a href="#/crew">
+          <section class="teal" style="padding-top:20px;padding-bottom:20px">
+            <h2>{{numMembers}}</h2>
+            Members
+          </section>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+        <a href="#/crew">
+          <section class="info" style="padding-top:20px;padding-bottom:20px">
+            <h2>{{numCrews}}</h2>
+            Crews
+          </section>
+        </a>
+      </div>
+
+      <div class="col-lg-4 col-md-4 col-xs-4 text-center">
+        <a href="#/mission">
+          <section class="navy" style="padding-top:20px;padding-bottom:20px">
+            <h2>{{numMissions}}</h2>
+            Missions
+          </section>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</br>
+<div class="container">
+
+
+  <div class="row well bs-component">
+
+    <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+      <img ng-src={{user.photo}} class="img-rounded img-responsive center-block">
+        <!-- <p class="text-center"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Teacher</p> -->
+      </img>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-9">
+      <form role="form">
+        <p class="form-group">
+          <i class="fa fa-user" aria-hidden="true"></i> {{user.name}}</p>
+          <p class="form-group">
+            <i class="fa fa-building" aria-hidden="true"></i> IES Bernat Sarria</p>
+        <p class="form-group">
+          <i class="fa fa-envelope" aria-hidden="true"></i> {{user.email}}</p>
+          <p class="form-group">
+            <i class="fa fa-graduation-cap" aria-hidden="true"></i> Teacher</p>
+      </form>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <ui-knob value="medianCrews*10" options="knobOptions"></ui-knob>
+    </div>
+
+  </div>
+
+
+<div class="row well bs-component">
+  <div ng-repeat="(key, crew) in crews">
+    <b>#{{$index+1}} {{crew.name}}</b>
+    <div class="progress" style="overflow:visible;height:26px;margin-bottom:10px;">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{crew.score*10}}"
+            aria-valuemin="0" aria-valuemax="100" style="width:{{crew.score*10}}%; font-size:20px; line-height:1.3; background-color:#00AEDD;">
+            {{crew.score*10}}%
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="row well bs-component">
+  <div class="col-lg">
+      <form role="form">
+        <p class="form-group">
+          <label> Name </label>
+          <input type="text" class="form-control" ng-model="user.name" name="userName">
+        </p>
+        <p class="form-group">
+          <label> Image profile URL </label>
+          <input type="text" class="form-control" ng-model="user.photo" name="photoUrl">
+        </p>
+        <input type="submit" class="btn btn-success" value="Update profile" ng-click=" updateProfile(user.name, user.photo)">
+        <br>
+      </form>
+
+  </div>
+</div>
+
+
+
+<div class="row well bs-component">
+  <div class="col-lg-12">
+
+      <form>
+        <h3>Update Email</h3>
+
+        <p class="form-group">
+          <label>New Email:</label>
+          <input type="text" ng-keypress="clear()" ng-model="newEmail" class="form-control" />
+        </p>
+
+        <button class="btn btn-success" ng-click="changeEmail(newEmail)"> Update email</button>
+      </form>
+  </div>
+</div>
+
+</div>
